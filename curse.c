@@ -2,11 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <threads.h>
 #include <time.h>
 #include <unistd.h>
 
 #ifdef __MACH__
+#include <pthread.h>
+typedef pthread_t thrd_t;
+typedef pthread_mutex_t mtx_t;
 enum { thrd_error = 0, thrd_success = 1 };
 enum { mtx_plain = 0, mtx_recursive = 1, mtx_timed = 2 };
 typedef void *(*thrd_start_t)(void *);
@@ -56,6 +58,8 @@ inline int mtx_destroy(mtx_t *mtx) {
     return thrd_error;
   }
 }
+#else
+#include <threads.h>
 #endif
 
 #define NONE 0
